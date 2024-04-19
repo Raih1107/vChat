@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="styles/sign-up.css">
+</head>
+<body>
+    <div class="box">
+        <form id="loginForm" action="">
+            <h2>Sign Up</h2>
+            <div class="inputBox">
+                <input type="text" id="username" required>
+                <span>Username</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="email" id="username" required>
+                <span>Email</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="password" required>
+                <span>Password</span>
+                <i></i>
+            </div>
+            <div id="password-strength">Password Strength: <span id="strength">Weak</span></div>
+            <div class="links">
+                <a href="#">Forgot Password</a>
+                <a href="#" class="signup">Sign In ?</a>
+            </div>
+            <!-- <input type="submit" value="Login"  class="login"> -->
+            <button type="submit" class="login">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const signUpBtn = document.querySelector('.signup');
+document.addEventListener('click', ()=>{
+    window.location.href = 'sign_in.html';
+
+});
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const passwordInput = document.getElementById('password');
+            const strengthIndicator = document.getElementById('strength');
+
+            passwordInput.addEventListener('input', function () {
+                const password = passwordInput.value;
+                const strength = getPasswordStrength(password);
+                strengthIndicator.textContent = strength;
+            });
+
+            loginForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Check if both username and password fields are filled
+                const username = document.getElementById('username').value.trim();
+                const password = passwordInput.value.trim();
+                const strength = getPasswordStrength(password);
+
+                if (username !== '' && password !== '' && strength !== 'Weak') {
+                    // Redirect to lobby page
+                    window.location.href = 'lobby.html';
+                } else if (strength === 'Weak') {
+                    alert('Please choose a stronger password.');
+                } else {
+                    // Display an error message or prevent redirection
+                    alert('Please fill in both username and password fields.');
+                }
+            });
+        });
+
+        function getPasswordStrength(password) {
+            // Define your criteria for a strong password
+            const minLength = 8;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            // Calculate password strength based on the criteria
+            if (password.length >= minLength && hasUppercase && hasLowercase && hasNumber && hasSpecialChar) {
+                return 'Strong';
+            } else if (password.length >= minLength && (hasUppercase || hasLowercase) && hasNumber) {
+                return 'Moderate';
+            } else {
+                return 'Weak';
+            }
+        }
+    </script>
+</body>
+</html>
